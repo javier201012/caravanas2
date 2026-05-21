@@ -39,19 +39,19 @@ npm run dev:full
 
 ## Variables de entorno necesarias
 
-Crea un archivo `.env` en la raíz (nunca lo subas al repo, ya está en `.gitignore`):
+Crea un archivo `.env` en la raíz (nunca lo subas al repo, ya está en `.gitignore`). Pide las credenciales a Javi:
 
 ```
-STRIPE_SECRET_KEY=sk_live_...        # Clave secreta de Stripe
 MONGODB_URI=mongodb+srv://...        # URI de conexión a MongoDB Atlas
 MONGODB_DB_NAME=caravanas            # Nombre de la base de datos
 APP_URL=http://localhost:5173        # URL del frontend (en producción: https://caravanas2.netlify.app)
 VITE_API_BASE_URL=http://localhost:4242  # Solo para desarrollo local
-ADMIN_PANEL_PASSWORD=...             # Contraseña del panel de administración
 PORT=4242                            # Puerto del servidor Express local
 ```
 
-En producción estas variables están configuradas directamente en Netlify (sin el archivo .env).
+> Las claves de Stripe y la contraseña del panel admin ya están configuradas en Netlify y las gestiona Javi directamente.
+
+En producción todas las variables están configuradas directamente en Netlify (sin el archivo .env).
 
 ---
 
@@ -116,7 +116,6 @@ En local se usa `server.js` (Express). En producción, Netlify redirige las ruta
 
 ## Pendiente / Ideas
 
-- [ ] Añadir clave de Stripe cuando esté lista para activar pagos reales
 - [ ] Webhook de Stripe para confirmar reservas tras pago exitoso
 - [ ] Panel admin: listado de reservas activas
 - [ ] Sitemap.xml para mejorar indexación SEO
