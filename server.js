@@ -147,6 +147,20 @@ function isAdminAuthorized(password) {
   return Boolean(adminPanelPassword) && String(password || '') === adminPanelPassword
 }
 
+app.post('/api/admin/verify', (request, response) => {
+  if (!adminPanelPassword) {
+    response.status(500).json({ error: 'Falta configurar ADMIN_PANEL_PASSWORD en el servidor.' })
+    return
+  }
+
+  if (!isAdminAuthorized(request.body?.password)) {
+    response.status(401).json({ error: 'Contraseña incorrecta.' })
+    return
+  }
+
+  response.json({ ok: true })
+})
+
 app.get('/api/health', (_request, response) => {
   response.json({ ok: true, database: reservationsCollection ? 'connected' : 'disconnected' })
 })

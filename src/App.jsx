@@ -7,8 +7,7 @@ import {
   MONTHLY_RATE_CENTS,
 } from '../booking.js'
 
-const logoImage =
-  '/freepik_quiero-un-logo-profesional-para-mi-pagina-web-de-alquiler-de-caravanas-se-llama-serviparking-debe-de-ser-de-colores-azules_0001.png'
+const logoImage = '/logo.webp'
 
 const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL ||
@@ -20,7 +19,7 @@ const mapsUrl =
   'https://www.google.es/maps/@40.2632148,-3.8341746,3a,75y,90h,90t/data=!3m7!1e1!3m5!1sMQ1JnwW6nLd95gtzeJ7c8w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DMQ1JnwW6nLd95gtzeJ7c8w%26yaw%3D90!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D'
 
 const gatePhotoUrl =
-  'https://streetviewpixels-pa.googleapis.com/v1/thumbnail?cb_client=maps_sv.tactile&w=900&h=600&pitch=0&panoid=MQ1JnwW6nLd95gtzeJ7c8w&yaw=90'
+  'https://streetviewpixels-pa.googleapis.com/v1/thumbnail?cb_client=maps_sv.tactile&w=630&h=420&pitch=0&panoid=MQ1JnwW6nLd95gtzeJ7c8w&yaw=90'
 
 const navItems = [
   { label: 'Ventajas', href: '#ventajas' },
@@ -171,6 +170,25 @@ function isCurrentMonthDate(dateIso, referenceDate = new Date()) {
   return year === referenceDate.getFullYear() && month === referenceDate.getMonth() + 1
 }
 
+function buildAdminCalendarMonths(calendarDates) {
+  const monthMap = {}
+
+  for (const date of calendarDates) {
+    const [year, month] = date.iso.split('-').map(Number)
+    const key = `${year}-${String(month).padStart(2, '0')}`
+
+    if (!monthMap[key]) {
+      monthMap[key] = { year, month, dates: {} }
+    }
+
+    monthMap[key].dates[date.iso] = date
+  }
+
+  return Object.values(monthMap).sort((a, b) =>
+    a.year !== b.year ? a.year - b.year : a.month - b.month,
+  )
+}
+
 function App() {
   const [paymentError, setPaymentError] = useState('')
   const [availabilityError, setAvailabilityError] = useState('')
@@ -186,6 +204,8 @@ function App() {
   const [adminPassword, setAdminPassword] = useState('')
   const [adminUnavailableDates, setAdminUnavailableDates] = useState([])
   const [adminFullyBooked, setAdminFullyBooked] = useState(false)
+  const [adminLoggedIn, setAdminLoggedIn] = useState(false)
+  const [isVerifyingPassword, setIsVerifyingPassword] = useState(false)
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: '',
     lastName: '',
@@ -283,6 +303,8 @@ function App() {
   function openAdminModal() {
     setAdminError('')
     setAdminSuccess('')
+    setAdminPassword('')
+    setAdminLoggedIn(false)
     setAdminUnavailableDates(availability.unavailableDates)
     setAdminFullyBooked(availability.isFullyBooked)
     closeMobileMenu()
@@ -397,6 +419,39 @@ function App() {
     }
   }
 
+  async function handleAdminLogin(event) {
+    event.preventDefault()
+
+    if (!adminPassword) {
+      setAdminError('Escribe la contrasena de administracion.')
+      return
+    }
+
+    try {
+      setAdminError('')
+      setIsVerifyingPassword(true)
+
+      const response = await fetch(`${apiBaseUrl}/api/admin/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: adminPassword }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Contrasena incorrecta.')
+      }
+
+      setAdminLoggedIn(true)
+      setAdminError('')
+    } catch (error) {
+      setAdminError(error instanceof Error ? error.message : 'Contrasena incorrecta.')
+    } finally {
+      setIsVerifyingPassword(false)
+    }
+  }
+
   async function handleStripeCheckout(event) {
     event.preventDefault()
 
@@ -484,7 +539,7 @@ function App() {
 
       <header className="site-header">
         <a className="brand-lockup" href="#top">
-          <img className="brand-mark" src={logoImage} alt={BRAND_NAME} />
+          <img className="brand-mark" src={logoImage} alt={BRAND_NAME} width="88" height="88" fetchpriority="high" />
           <div>
             <p className="brand-name">{BRAND_NAME}</p>
             <p className="brand-subtitle">Parking mensual para caravanas</p>
@@ -665,7 +720,7 @@ function App() {
         </div>
 
         <a className="location-visual" href={mapsUrl} target="_blank" rel="noreferrer">
-          <img src={gatePhotoUrl} alt="Acceso al aparcamiento en Google Maps" />
+          <img src={gatePhotoUrl} alt="Acceso al aparcamiento en Google Maps" width="630" height="420" loading="lazy" />
           <div className="location-visual-copy">
             <span className="section-kicker">Acceso visual</span>
             <strong>Consulta la entrada antes de venir</strong>
@@ -990,66 +1045,130 @@ function App() {
             <div className="checkout-modal-header">
               <div>
                 <p className="section-kicker">Admin</p>
-                <h2 id="admin-modal-title">Gestiona las fechas disponibles.</h2>
-                <p className="admin-meta">Ultima actualizacion: {formatUpdatedAt(availability.updatedAt)}</p>
+                <h2 id="admin-modal-title">
+                  {adminLoggedIn ? 'Gestiona las fechas disponibles.' : 'Acceso de administracion.'}
+                </h2>
+                {adminLoggedIn ? (
+                  <p className="admin-meta">Ultima actualizacion: {formatUpdatedAt(availability.updatedAt)}</p>
+                ) : null}
               </div>
               <button className="modal-close" type="button" onClick={closeAdminModal}>
                 Cerrar
               </button>
             </div>
 
-            <form className="admin-card" onSubmit={handleSaveAvailability}>
-              <label className="form-field">
-                <span>Contrasena admin</span>
-                <input
-                  type="password"
-                  value={adminPassword}
-                  onChange={(event) => setAdminPassword(event.target.value)}
-                  placeholder="Introduce la contrasena"
-                />
-              </label>
+            {!adminLoggedIn ? (
+              <form className="admin-card" onSubmit={handleAdminLogin}>
+                <label className="form-field">
+                  <span>Contrasena admin</span>
+                  <input
+                    type="password"
+                    value={adminPassword}
+                    onChange={(event) => setAdminPassword(event.target.value)}
+                    placeholder="Introduce la contrasena"
+                    autoFocus
+                  />
+                </label>
 
-              <label className="admin-toggle-row">
-                <input
-                  type="checkbox"
-                  checked={adminFullyBooked}
-                  onChange={(event) => setAdminFullyBooked(event.target.checked)}
-                />
-                <span>Estamos completos</span>
-              </label>
+                {adminError ? <p className="admin-feedback error-text">{adminError}</p> : null}
 
-              <div className="admin-calendar-grid">
-                {availability.calendar.map((date) => {
-                  const isBlocked = adminUnavailableDates.includes(date.iso)
+                <div className="checkout-actions">
+                  <button className="primary-action payment-button" type="submit" disabled={isVerifyingPassword}>
+                    {isVerifyingPassword ? 'Verificando...' : 'Acceder'}
+                  </button>
+                  <button className="secondary-action" type="button" onClick={closeAdminModal}>
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form className="admin-card" onSubmit={handleSaveAvailability}>
+                <label className="admin-toggle-row">
+                  <input
+                    type="checkbox"
+                    checked={adminFullyBooked}
+                    onChange={(event) => setAdminFullyBooked(event.target.checked)}
+                  />
+                  <span>Marcar como completo (bloquea todas las reservas)</span>
+                </label>
 
-                  return (
-                    <button
-                      key={date.iso}
-                      className={isBlocked ? 'admin-date-option admin-date-blocked' : 'admin-date-option admin-date-open'}
-                      type="button"
-                      onClick={() => toggleAdminDate(date.iso)}
-                      disabled={isAvailabilityLoading || isSavingAvailability}
-                    >
-                      <span>{date.weekday}</span>
-                      <strong>{date.label}</strong>
-                      <small>{isBlocked ? 'Bloqueada' : 'Disponible'}</small>
-                    </button>
-                  )
-                })}
-              </div>
+                <div className="admin-months-wrapper">
+                  {buildAdminCalendarMonths(availability.calendar).map((monthData) => {
+                    const { year, month } = monthData
+                    const daysInMonth = new Date(year, month, 0).getDate()
+                    const firstDayOfWeek = new Date(year, month - 1, 1).getDay()
+                    const offset = (firstDayOfWeek + 6) % 7
+                    const monthName = new Date(year, month - 1, 1).toLocaleDateString('es-ES', {
+                      month: 'long',
+                      year: 'numeric',
+                    })
 
-              {adminError ? <p className="admin-feedback error-text">{adminError}</p> : null}
-              {adminSuccess ? <p className="admin-feedback success-text">{adminSuccess}</p> : null}
+                    const cells = []
+                    for (let i = 0; i < offset; i++) {
+                      cells.push({ type: 'empty', key: `empty-${year}-${month}-${i}` })
+                    }
+                    for (let d = 1; d <= daysInMonth; d++) {
+                      const iso = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+                      cells.push({
+                        type: 'day',
+                        key: iso,
+                        iso,
+                        day: d,
+                        inRange: Boolean(monthData.dates[iso]),
+                        blocked: adminUnavailableDates.includes(iso),
+                      })
+                    }
 
-              <div className="checkout-actions">
-                <button className="primary-action payment-button" type="submit" disabled={isSavingAvailability}>
-                  {isSavingAvailability ? 'Guardando...' : 'Guardar disponibilidad'}
-                </button>
-                <button className="secondary-action" type="button" onClick={closeAdminModal}>
-                  Cerrar
-                </button>
-              </div>
-            </form>
+                    return (
+                      <div key={`${year}-${month}`} className="admin-month-calendar">
+                        <p className="admin-month-name">
+                          {monthName.charAt(0).toUpperCase() + monthName.slice(1)}
+                        </p>
+                        <div className="admin-weekday-row">
+                          {['L', 'M', 'X', 'J', 'V', 'S', 'D'].map((d) => (
+                            <span key={d}>{d}</span>
+                          ))}
+                        </div>
+                        <div className="admin-month-grid">
+                          {cells.map((cell) =>
+                            cell.type === 'empty' ? (
+                              <div key={cell.key} className="admin-cal-empty" />
+                            ) : !cell.inRange ? (
+                              <div key={cell.key} className="admin-cal-day admin-cal-outside">
+                                <strong>{cell.day}</strong>
+                              </div>
+                            ) : (
+                              <button
+                                key={cell.key}
+                                type="button"
+                                className={`admin-cal-day ${cell.blocked ? 'admin-cal-blocked' : 'admin-cal-open'}`}
+                                onClick={() => toggleAdminDate(cell.iso)}
+                                disabled={isAvailabilityLoading || isSavingAvailability}
+                              >
+                                <strong>{cell.day}</strong>
+                                <small>{cell.blocked ? '✗' : '✓'}</small>
+                              </button>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                {adminError ? <p className="admin-feedback error-text">{adminError}</p> : null}
+                {adminSuccess ? <p className="admin-feedback success-text">{adminSuccess}</p> : null}
+
+                <div className="checkout-actions">
+                  <button className="primary-action payment-button" type="submit" disabled={isSavingAvailability}>
+                    {isSavingAvailability ? 'Guardando...' : 'Guardar disponibilidad'}
+                  </button>
+                  <button className="secondary-action" type="button" onClick={closeAdminModal}>
+                    Cerrar
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       ) : null}

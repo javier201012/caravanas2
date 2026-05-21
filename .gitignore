@@ -12,7 +12,10 @@ dist
 dist-ssr
 *.local
 .env
+.env.*.local
 data/*.json
+.netlify/
+lighthouse-report.json
 
 # Editor directories and files
 .vscode/*
