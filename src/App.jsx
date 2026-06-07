@@ -23,7 +23,7 @@ const gatePhotoUrl =
 
 const navItems = [
   { label: 'Ventajas', href: '#ventajas' },
-  { label: 'Ubicacion', href: '#ubicacion' },
+  { label: 'Ubicación', href: '#ubicacion' },
   { label: 'Tarifa', href: '#tarifa' },
   { label: 'Proceso', href: '#proceso' },
   { label: 'Contacto', href: '#contacto' },
@@ -32,62 +32,62 @@ const navItems = [
 const featureCards = [
   {
     title: 'Aparcamiento preparado de verdad',
-    text: 'Recinto hormigonado dentro de poligono industrial, pensado para entrar y salir con comodidad y sin maniobras tensas.',
+    text: 'Recinto hormigonado dentro de polígono industrial, pensado para entrar y salir con comodidad y sin maniobras tensas.',
   },
   {
     title: 'Primer pago prorrateado',
-    text: 'El alta inicial se calcula a 2 euros al dia segun los dias que falten hasta final de mes. Despues la cuota vuelve a 60 euros.',
+    text: 'El alta inicial se calcula a 2 euros al día según los días que falten hasta final de mes. Después la cuota vuelve a 60 euros.',
   },
   {
     title: 'Disponibilidad visible y editable',
-    text: 'Las fechas de entrada salen del backend y puedes bloquear o liberar dias desde un panel admin sencillo.',
+    text: 'Las fechas de entrada salen del backend y puedes bloquear o liberar días desde un panel admin sencillo.',
   },
 ]
 
 const quickFacts = [
-  { value: '2 EUR/dia', label: 'alta inicial hasta fin de mes' },
-  { value: formatCurrency(MONTHLY_RATE_CENTS), label: 'renovacion el primer dia de cada mes' },
-  { value: '90 dias', label: 'ventana de fechas gestionable' },
+  { value: '2 EUR/día', label: 'alta inicial hasta fin de mes' },
+  { value: formatCurrency(MONTHLY_RATE_CENTS), label: 'renovación el primer día de cada mes' },
+  { value: '90 días', label: 'ventana de fechas gestionable' },
 ]
 
 const valueItems = [
-  'Espacio hormigonado para un uso mas comodo y limpio.',
-  'Entorno industrial con accesos pensados para vehiculos de volumen.',
+  'Espacio hormigonado para un uso más cómodo y limpio.',
+  'Entorno industrial con accesos pensados para vehículos de volumen.',
   'Primer cobro justo, sin obligar a pagar un mes entero si entras a mitad.',
-  'Panel admin simple para bloquear dias ocupados o reservar huecos manualmente.',
+  'Panel admin simple para bloquear días ocupados o reservar huecos manualmente.',
 ]
 
 const processSteps = [
   {
     title: 'Elige la fecha de entrada',
-    text: 'La web muestra solo dias disponibles. Asi el cliente no intenta pagar una fecha ya ocupada.',
+    text: 'La web muestra solo días disponibles. Así el cliente no intenta pagar una fecha ya ocupada.',
   },
   {
     title: 'Se calcula el alta inicial',
-    text: 'Stripe cobra el primer periodo a 2 euros por dia hasta fin de mes y deja preparada la renovacion automatica.',
+    text: 'Stripe cobra el primer período a 2 euros por día hasta fin de mes y deja preparada la renovación automática.',
   },
   {
-    title: 'Renovacion mensual ordenada',
-    text: 'Desde el mes siguiente la cuota se renueva el primer dia de cada mes con la tarifa mensual habitual de 60 euros.',
+    title: 'Renovación mensual ordenada',
+    text: 'Desde el mes siguiente la cuota se renueva el primer día de cada mes con la tarifa mensual habitual de 60 euros.',
   },
 ]
 
 const faqItems = [
   {
-    question: 'Como funciona el primer pago?',
-    answer: 'El primer cobro se calcula por dias restantes del mes a 2 euros al dia. Si entras el 20, solo pagas del 20 al final de ese mes.',
+    question: '¿Cómo funciona el primer pago?',
+    answer: 'El primer cobro se calcula por días restantes del mes a 2 euros al día. Si entras el 20, solo pagas del 20 al final de ese mes.',
   },
   {
-    question: 'Cuando se renueva despues?',
-    answer: 'La suscripcion queda preparada para renovarse automaticamente el primer dia de cada mes con la cuota mensual de 60 euros.',
+    question: '¿Cuándo se renueva después?',
+    answer: 'La suscripción queda preparada para renovarse automáticamente el primer día de cada mes con la cuota mensual de 60 euros.',
   },
   {
-    question: 'Puedo cambiar las fechas disponibles yo mismo?',
-    answer: 'Si. La landing incluye un panel admin basico protegido por contrasena para bloquear o liberar dias de entrada.',
+    question: '¿Puedo cambiar las fechas disponibles yo mismo?',
+    answer: 'Sí. La landing incluye un panel admin básico protegido por contraseña para bloquear o liberar días de entrada.',
   },
   {
-    question: 'Donde esta exactamente?',
-    answer: 'En Calle Malva 4, Humanes, dentro de poligono industrial y muy cerca de Fuenlabrada y Moraleja de En Medio.',
+    question: '¿Dónde está exactamente?',
+    answer: 'En Calle Malva 4, Humanes, dentro de polígono industrial y muy cerca de Fuenlabrada y Moraleja de En Medio.',
   },
 ]
 
@@ -135,7 +135,7 @@ async function requestAvailability() {
     try {
       data = JSON.parse(responseText)
     } catch {
-      throw new Error('La API de disponibilidad no ha devuelto JSON valido.')
+      throw new Error('La API de disponibilidad no ha devuelto JSON válido.')
     }
   }
 
@@ -148,13 +148,13 @@ async function requestAvailability() {
 
 function formatUpdatedAt(value) {
   if (!value) {
-    return 'Sin cambios guardados todavia.'
+    return 'Sin cambios guardados todavía.'
   }
 
   const parsed = new Date(value)
 
   if (Number.isNaN(parsed.getTime())) {
-    return 'Sin cambios guardados todavia.'
+    return 'Sin cambios guardados todavía.'
   }
 
   return parsed.toLocaleString('es-ES')
@@ -340,7 +340,7 @@ function App() {
     event.preventDefault()
 
     if (!adminPassword) {
-      setAdminError('Escribe la contrasena del panel admin antes de guardar.')
+      setAdminError('Escribe la contraseña del panel admin antes de guardar.')
       return
     }
 
@@ -368,7 +368,7 @@ function App() {
         try {
           data = JSON.parse(responseText)
         } catch {
-          throw new Error('La API admin no ha devuelto JSON valido.')
+          throw new Error('La API admin no ha devuelto JSON válido.')
         }
       }
 
@@ -423,7 +423,7 @@ function App() {
     event.preventDefault()
 
     if (!adminPassword) {
-      setAdminError('Escribe la contrasena de administracion.')
+      setAdminError('Escribe la contraseña de administración.')
       return
     }
 
@@ -440,13 +440,13 @@ function App() {
       const data = await response.json().catch(() => ({}))
 
       if (!response.ok) {
-        throw new Error(data.error || 'Contrasena incorrecta.')
+        throw new Error(data.error || 'Contraseña incorrecta.')
       }
 
       setAdminLoggedIn(true)
       setAdminError('')
     } catch (error) {
-      setAdminError(error instanceof Error ? error.message : 'Contrasena incorrecta.')
+      setAdminError(error instanceof Error ? error.message : 'Contraseña incorrecta.')
     } finally {
       setIsVerifyingPassword(false)
     }
@@ -474,7 +474,7 @@ function App() {
       !checkoutForm.plate ||
       !checkoutForm.startDate
     ) {
-      setPaymentError('Completa nombre, apellido, email, telefono, DNI, matricula y fecha antes de continuar.')
+      setPaymentError('Completa nombre, apellido, email, teléfono, DNI, matrícula y fecha antes de continuar.')
       return
     }
 
@@ -496,7 +496,7 @@ function App() {
       try {
         data = responseText ? JSON.parse(responseText) : {}
       } catch {
-        throw new Error('La API no ha devuelto JSON. Revisa que el backend o la funcion de Netlify esten desplegados.')
+        throw new Error('La API no ha devuelto JSON. Revisa que el backend o la función de Netlify estén desplegados.')
       }
 
       if (!response.ok || !data.url) {
@@ -519,7 +519,7 @@ function App() {
     <main className="page-shell" id="top">
       {checkoutStatus === 'success' ? (
         <div className="status-banner success-banner">
-          Pago iniciado correctamente. El alta inicial se ha enviado a Stripe y la renovacion quedara programada para el primer dia de cada mes.
+          Pago iniciado correctamente. El alta inicial se ha enviado a Stripe y la renovación quedará programada para el primer día de cada mes.
         </div>
       ) : null}
 
@@ -551,7 +551,7 @@ function App() {
           type="button"
           aria-expanded={isMobileMenuOpen}
           aria-controls="main-nav"
-          aria-label={isMobileMenuOpen ? 'Cerrar menu principal' : 'Abrir menu principal'}
+          aria-label={isMobileMenuOpen ? 'Cerrar menú principal' : 'Abrir menú principal'}
           onClick={() => setIsMobileMenuOpen((current) => !current)}
         >
           <span className="mobile-menu-toggle-lines" aria-hidden="true">
@@ -559,13 +559,13 @@ function App() {
             <span />
             <span />
           </span>
-          <span>Menu</span>
+          <span>Menú</span>
         </button>
 
         <nav
           id="main-nav"
           className={isMobileMenuOpen ? 'main-nav main-nav-open' : 'main-nav'}
-          aria-label="Menu principal"
+          aria-label="Menú principal"
         >
           {navItems.map((item) => (
             <a key={item.href} href={item.href} onClick={closeMobileMenu}>
@@ -592,7 +592,7 @@ function App() {
           <p className="eyebrow">Parking mensual para caravanas</p>
           <h1>
             Reserva una plaza en Humanes
-            <span className="hero-subtitle">con alta inicial prorrateada y renovacion fija el primer dia de cada mes.</span>
+            <span className="hero-subtitle">con alta inicial prorrateada y renovación fija el primer día de cada mes.</span>
           </h1>
 
           <aside className="hero-panel offer-panel" aria-label="Resumen comercial principal">
@@ -600,7 +600,7 @@ function App() {
             <div className="hero-panel-grid">
               <div>
                 <span className="hero-panel-key">Aparcamiento</span>
-                <p>Hormigonado y dentro de poligono industrial.</p>
+                <p>Hormigonado y dentro de polígono industrial.</p>
               </div>
               <div>
                 <span className="hero-panel-key">Alta inicial</span>
@@ -611,7 +611,7 @@ function App() {
                 <p>{formatCurrency(MONTHLY_RATE_CENTS)} el primer dia de cada mes.</p>
               </div>
               <div>
-                <span className="hero-panel-key">Telefono</span>
+                <span className="hero-panel-key">Teléfono</span>
                 <a href="tel:+34649448383">+34 649 448 383</a>
               </div>
               <div>
@@ -635,9 +635,9 @@ function App() {
           </aside>
 
           <p className="lead">
-            {BRAND_NAME} deja claro desde la primera pantalla cuanto se paga al entrar,
-            cuando se renueva y que fechas siguen libres. La idea es vender mejor sin
-            complicarte la gestion diaria.
+            {BRAND_NAME} deja claro desde la primera pantalla cuánto se paga al entrar,
+            cuándo se renueva y qué fechas siguen libres. La idea es vender mejor sin
+            complicarte la gestión diaria.
           </p>
 
           <div className="hero-actions">
@@ -677,11 +677,11 @@ function App() {
 
       <section className="split-section enriched-section">
         <div>
-          <p className="section-kicker">Por que elegir {BRAND_NAME}</p>
-          <h2>Una landing mas util para vender, cobrar mejor y controlar la ocupacion real.</h2>
+          <p className="section-kicker">Por qué elegir {BRAND_NAME}</p>
+          <h2>Una landing más útil para vender, cobrar mejor y controlar la ocupación real.</h2>
           <p className="section-lead">
             Ya no dependes de un calendario fijo en el frontend. Las fechas disponibles se
-            leen del backend y el primer cobro se calcula automaticamente segun el dia de entrada.
+            leen del backend y el primer cobro se calcula automáticamente según el día de entrada.
           </p>
         </div>
 
@@ -697,20 +697,20 @@ function App() {
 
       <section className="location-section" id="ubicacion">
         <div className="location-copy">
-          <p className="section-kicker">Ubicacion y acceso</p>
-          <h2>Mover la caravana nunca fue tan facil.</h2>
+          <p className="section-kicker">Ubicación y acceso</p>
+          <h2>Mover la caravana nunca fue tan fácil.</h2>
           <p>
-            La cercania con Fuenlabrada, Humanes y Moraleja de En Medio lo
-            convierte en un punto practico para guardar el vehiculo y tenerlo accesible.
+            La cercanía con Fuenlabrada, Humanes y Moraleja de En Medio lo
+            convierte en un punto práctico para guardar el vehículo y tenerlo accesible.
           </p>
           <div className="location-points">
             <div>
               <span className="hero-panel-key">Entorno</span>
-              <p>Poligono industrial con accesos naturales para vehiculos de mayor volumen.</p>
+              <p>Polígono industrial con accesos naturales para vehículos de mayor volumen.</p>
             </div>
             <div>
               <span className="hero-panel-key">Superficie</span>
-              <p>Base hormigonada para una estancia mensual mas comoda y ordenada.</p>
+              <p>Base hormigonada para una estancia mensual más cómoda y ordenada.</p>
             </div>
             <div>
               <span className="hero-panel-key">Referencia visual</span>
@@ -731,21 +731,21 @@ function App() {
 
       <section className="tariff-section" id="tarifa">
         <div className="tariff-copy">
-          <p className="section-kicker">Tarifa y renovacion</p>
-          <h2>Primer pago flexible. Luego cuota fija el primer dia de cada mes.</h2>
+          <p className="section-kicker">Tarifa y renovación</p>
+          <h2>Primer pago flexible. Luego cuota fija el primer día de cada mes.</h2>
           <p>
-            El alta inicial se prorratea a 2 euros por dia hasta fin de mes. Desde el siguiente
-            ciclo, la plaza se renueva automaticamente por {formatCurrency(MONTHLY_RATE_CENTS)} al mes.
+            El alta inicial se prorratea a 2 euros por día hasta fin de mes. Desde el siguiente
+            ciclo, la plaza se renueva automáticamente por {formatCurrency(MONTHLY_RATE_CENTS)} al mes.
           </p>
         </div>
 
         <div className="tariff-card">
           <p className="tariff-label">Plaza mensual</p>
           <h3>{formatCurrency(MONTHLY_RATE_CENTS)}</h3>
-          <p className="tariff-note">Entrada inicial calculada por dias restantes del mes a 2 euros al dia.</p>
+          <p className="tariff-note">Entrada inicial calculada por días restantes del mes a 2 euros al día.</p>
           <ul className="tariff-list">
-            <li>Primer cobro prorrateado hasta el ultimo dia del mes.</li>
-            <li>Renovacion automatica el primer dia de cada mes.</li>
+            <li>Primer cobro prorrateado hasta el último día del mes.</li>
+            <li>Renovación automática el primer día de cada mes.</li>
             <li>Fechas controladas desde panel admin y backend.</li>
           </ul>
           <div className="tariff-actions">
@@ -767,7 +767,7 @@ function App() {
       <section className="process-section" id="proceso">
         <div className="process-header">
           <p className="section-kicker">Proceso</p>
-          <h2>Un flujo mas claro tanto para el cliente como para ti.</h2>
+          <h2>Un flujo más claro tanto para el cliente como para ti.</h2>
         </div>
 
         <div className="process-grid">
@@ -806,7 +806,7 @@ function App() {
         <div className="contact-card modern-contact-card">
           <div className="contact-details">
             <div>
-              <span className="contact-label">Telefono</span>
+              <span className="contact-label">Teléfono</span>
               <a href="tel:+34649448383">+34 649 448 383</a>
             </div>
             <div>
@@ -814,7 +814,7 @@ function App() {
               <a href="mailto:ganiveamaja@gmail.com">ganiveamaja@gmail.com</a>
             </div>
             <div>
-              <span className="contact-label">Direccion</span>
+              <span className="contact-label">Dirección</span>
               <p>Calle Malva 4, Humanes</p>
             </div>
             <div>
@@ -836,7 +836,7 @@ function App() {
               Llamar ahora
             </a>
             <a className="secondary-action" href={mapsUrl} target="_blank" rel="noreferrer">
-              Abrir ubicacion
+              Abrir ubicación
             </a>
           </div>
         </div>
@@ -951,7 +951,7 @@ function App() {
                 <div>
                   <span className="section-kicker">Fechas de entrada</span>
                   <p className="date-picker-help">
-                    Se muestran solo las fechas que quedan de este mes. Las bloqueadas tambien aparecen para que veas la ocupacion real.
+                    Se muestran solo las fechas que quedan de este mes. Las bloqueadas también aparecen para que veas la ocupación real.
                   </p>
                 </div>
 
@@ -1005,8 +1005,8 @@ function App() {
                       <p>{selectedCharge.amountLabel}</p>
                     </div>
                     <div>
-                      <span className="hero-panel-key">Dias incluidos</span>
-                      <p>{selectedCharge.daysRemaining} dias a {selectedCharge.dailyRateLabel}/dia</p>
+                      <span className="hero-panel-key">Días incluidos</span>
+                      <p>{selectedCharge.daysRemaining} días a {selectedCharge.dailyRateLabel}/día</p>
                     </div>
                     <div>
                       <span className="hero-panel-key">Siguiente cobro</span>
@@ -1014,7 +1014,7 @@ function App() {
                     </div>
                   </div>
                   <p className="charge-summary-note">
-                    Desde esa fecha, Stripe renovara la plaza por {selectedCharge.monthlyRateLabel} al mes.
+                    Desde esa fecha, Stripe renovará la plaza por {selectedCharge.monthlyRateLabel} al mes.
                   </p>
                 </div>
               ) : null}
@@ -1046,10 +1046,10 @@ function App() {
               <div>
                 <p className="section-kicker">Admin</p>
                 <h2 id="admin-modal-title">
-                  {adminLoggedIn ? 'Gestiona las fechas disponibles.' : 'Acceso de administracion.'}
+                  {adminLoggedIn ? 'Gestiona las fechas disponibles.' : 'Acceso de administración.'}
                 </h2>
                 {adminLoggedIn ? (
-                  <p className="admin-meta">Ultima actualizacion: {formatUpdatedAt(availability.updatedAt)}</p>
+                  <p className="admin-meta">Última actualización: {formatUpdatedAt(availability.updatedAt)}</p>
                 ) : null}
               </div>
               <button className="modal-close" type="button" onClick={closeAdminModal}>
@@ -1060,12 +1060,12 @@ function App() {
             {!adminLoggedIn ? (
               <form className="admin-card" onSubmit={handleAdminLogin}>
                 <label className="form-field">
-                  <span>Contrasena admin</span>
+                  <span>Contraseña admin</span>
                   <input
                     type="password"
                     value={adminPassword}
                     onChange={(event) => setAdminPassword(event.target.value)}
-                    placeholder="Introduce la contrasena"
+                    placeholder="Introduce la contraseña"
                     autoFocus
                   />
                 </label>
