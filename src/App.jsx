@@ -604,11 +604,11 @@ function App() {
               </div>
               <div>
                 <span className="hero-panel-key">Alta inicial</span>
-                <p>2 euros al dia hasta final de mes.</p>
+                <p>2 euros al día hasta final de mes.</p>
               </div>
               <div>
-                <span className="hero-panel-key">Renovacion</span>
-                <p>{formatCurrency(MONTHLY_RATE_CENTS)} el primer dia de cada mes.</p>
+                <span className="hero-panel-key">Renovación</span>
+                <p>{formatCurrency(MONTHLY_RATE_CENTS)} el primer día de cada mes.</p>
               </div>
               <div>
                 <span className="hero-panel-key">Teléfono</span>
@@ -818,8 +818,8 @@ function App() {
               <p>Calle Malva 4, Humanes</p>
             </div>
             <div>
-              <span className="contact-label">Renovacion mensual</span>
-              <p>{formatCurrency(MONTHLY_RATE_CENTS)} el primer dia de cada mes</p>
+              <span className="contact-label">Renovación mensual</span>
+              <p>{formatCurrency(MONTHLY_RATE_CENTS)} el primer día de cada mes</p>
             </div>
           </div>
 
@@ -915,7 +915,7 @@ function App() {
               </label>
 
               <label className="form-field">
-                <span>Telefono</span>
+                <span>Teléfono</span>
                 <input
                   type="tel"
                   value={checkoutForm.phone}
@@ -937,7 +937,7 @@ function App() {
               </label>
 
               <label className="form-field">
-                <span>Matricula de la caravana</span>
+                <span>Matrícula de la caravana</span>
                 <input
                   type="text"
                   value={checkoutForm.plate}
